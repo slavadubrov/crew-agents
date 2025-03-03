@@ -1,0 +1,125 @@
+research_topic:
+  description: >
+    Research the topic for the blog post titled "{post_title}" which is part {post_index_plus_one} of {total_posts} in a series about {topic}.
+    
+    Additional information about the blog's goal: {goal}
+    
+    Post description: {post_description}
+    
+    Your research should include:
+    1. Up-to-date information on the specific topic
+    2. Best practices and current approaches
+    3. Common challenges and solutions
+    4. Real-world applications and examples
+    5. Relevant libraries, tools, or frameworks
+    6. Any recent developments or trends
+    
+    Ensure your research is accurate, comprehensive, and directly relevant to the post topic.
+    Include technical details that will be valuable for the target audience.
+
+  expected_output: >
+    A comprehensive research document with accurate, up-to-date information on the post topic, including technical details, best practices, and examples.
+  agent: researcher
+
+write_content:
+  description: >
+    Write the main content for the blog post titled "{post_title}" which is part {post_index_plus_one} of {total_posts} in a series about {topic}.
+    
+    Additional information about the blog's goal: {goal}
+    
+    Post description: {post_description}
+    
+    Use the research provided to create clear, engaging, and informative content.
+    
+    Structure your content with:
+    1. An engaging introduction that sets context and explains why the topic matters
+    2. Clear headings and subheadings that organize the content logically
+    3. Explanations of key concepts in simple, accessible language
+    4. Real-world examples and applications
+    5. Technical details appropriate for the target audience
+    6. A conclusion that summarizes key points and suggests next steps
+    
+    Make the content approachable but technically substantive.
+    Use a conversational tone while maintaining technical accuracy.
+    Avoid unnecessary jargon but include necessary technical terms with explanations.
+
+  expected_output: >
+    A well-structured, engaging, and informative blog post draft that clearly explains the technical topic.
+  agent: content_writer
+
+create_code_examples:
+  description: >
+    Create code examples for the blog post titled "{post_title}" which is part {post_index_plus_one} of {total_posts} in a series about {topic}.
+    
+    Additional information about the blog's goal: {goal}
+    
+    Post description: {post_description}
+    
+    Develop clean, well-documented code examples that demonstrate the concepts discussed in the blog post.
+    
+    Your code examples should:
+    1. Be clear, concise, and follow best practices
+    2. Include thorough comments explaining what the code does and why
+    3. Demonstrate practical applications of the concepts
+    4. Be fully functional and free from errors
+    5. Use a simple, functional Python style as requested by the user
+    6. Progress from basic to more advanced concepts where appropriate
+    
+    Format each code example using markdown code blocks with appropriate language syntax highlighting.
+
+  expected_output: >
+    A set of clean, well-documented, and functional code examples that effectively demonstrate the concepts discussed in the blog post.
+  agent: code_writer
+
+create_diagrams:
+  description: >
+    Create diagrams using Mermaid syntax for the blog post titled "{post_title}" which is part {post_index_plus_one} of {total_posts} in a series about {topic}.
+    
+    Additional information about the blog's goal: {goal}
+    
+    Post description: {post_description}
+    
+    Design visual diagrams that clarify complex concepts from the blog post.
+    
+    Your diagrams should:
+    1. Visually represent key concepts, workflows, architectures, or processes
+    2. Be simple enough to understand at a glance but detailed enough to be valuable
+    3. Include clear labels and minimal text
+    4. Complement and enhance the written content and code examples
+    5. Be created using Mermaid syntax within markdown code blocks
+    
+    Create 2-3 diagrams that would be most helpful for understanding the core concepts of the post.
+
+  expected_output: >
+    2-3 clear, informative diagrams in Mermaid syntax that effectively visualize the key concepts from the blog post.
+  agent: diagram_creator
+
+review_blog_post:
+  description: >
+    Review and finalize the blog post titled "{post_title}" which is part {post_index_plus_one} of {total_posts} in a series about {topic}.
+    
+    Additional information about the blog's goal: {goal}
+    
+    Post description: {post_description}
+    
+    Critically review all components of the blog post (main content, code examples, and diagrams).
+    
+    Your review should:
+    1. Identify and correct any technical inaccuracies
+    2. Improve clarity, flow, and readability
+    3. Ensure the content is appropriately technical but accessible
+    4. Verify code examples are correct, well-documented, and follow best practices
+    5. Check that diagrams effectively illustrate key concepts
+    6. Make the content more human-like, straightforward, and conversational
+    7. Remove unnecessarily complex language or excessive formality
+    
+    Be critical but constructive. Make direct edits to improve the post.
+    
+    Finally, compile all components into a cohesive, well-formatted markdown document that's ready for publication.
+    Include a clear title, introduction, main content with appropriate headings, code examples, diagrams, and conclusion.
+    If content, code or diagram require significant improvement, request changes until you satisfied with quality.
+    Do not forget include provided material: content, code, diagrams!
+
+  expected_output: >
+    A polished, publication-ready blog post in markdown format that includes well-integrated content, code examples, and diagrams.
+  agent: reviewer 

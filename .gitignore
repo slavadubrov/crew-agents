@@ -111,5 +111,6 @@ config.local.yml
 *.sqlite3 
 
 # Ignore all files in the files directory
-*/files/*
-*/db/*
+*files*
+*db*
+*output*
