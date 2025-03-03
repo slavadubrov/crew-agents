@@ -113,3 +113,4 @@ config.local.yml
 # Ignore all files in the files directory
 */files/*
 */db/*
+*/output/*

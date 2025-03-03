@@ -1,0 +1,57 @@
+develop_strategy:
+  description: >
+    Develop a high-level strategy for a technical blog series on {topic}. 
+    Consider the target audience, main goals, key themes, and overall structure of the series.
+    
+    Additional information about the blog's goal: {goal}
+    
+    Your analysis should include:
+    1. Target audience profile and their needs
+    2. Key themes to cover in the series
+    3. Recommended tone and style for technical content
+    4. High-level progression of topics
+    5. Any special considerations for this particular subject
+
+  expected_output: >
+    A detailed strategy document outlining the target audience, key themes, recommended approach, and progression for the blog series.
+  agent: strategist
+
+create_blog_outlines:
+  description: >
+    Based on the strategy developed, create detailed outlines for each blog post in the series about {topic}.
+    
+    Additional information about the blog's goal: {goal}
+    
+    For each blog post, provide:
+    1. A clear, specific title
+    2. A detailed description of what the post will cover
+    3. Key points that should be addressed
+    4. Suggested code examples or diagrams that would enhance understanding
+    5. How this post connects to others in the series
+    
+    Ensure the posts follow a logical progression and build upon each other where appropriate.
+
+  expected_output: >
+    A set of detailed outlines for each blog post in the series, with titles, descriptions, and key content points.
+  agent: planner
+
+review_roadmap:
+  description: >
+    Critically review the blog series roadmap for {topic} to ensure it is comprehensive, coherent, and valuable.
+    
+    Additional information about the blog's goal: {goal}
+    
+    Your review should:
+    1. Identify any gaps in coverage or missed opportunities
+    2. Suggest improvements to the structure or progression
+    3. Ensure each post has a clear focus and purpose
+    4. Verify the content addresses the needs of the target audience
+    5. Check that the series achieves the stated goals
+    
+    Be critical but constructive - your goal is to strengthen the roadmap.
+    
+    Finally, compile the finalized list of blog posts with titles and descriptions, incorporating your improvements.
+
+  expected_output: >
+    A finalized list of blog posts with titles and descriptions, improved based on your critical review.
+  agent: reviewer 
