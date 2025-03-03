@@ -13,6 +13,7 @@ setup(
     entry_points={
         "console_scripts": [
             "kickoff=write_a_technical_blog.main:kickoff",
+            "blog-gen=write_a_technical_blog.run:main",
         ],
     },
 )

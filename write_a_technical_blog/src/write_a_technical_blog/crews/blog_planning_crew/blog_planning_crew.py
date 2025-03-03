@@ -74,7 +74,7 @@ class BlogPlanningCrew:
         return Crew(
             agents=self.agents,
             tasks=self.tasks,
-            manager_llm=ChatOpenAI(model="gpt-4o", temperature=0.7),
+            manager_llm=ChatOpenAI(model="gpt-4o", temperature=0.3),
             process=Process.hierarchical,
             verbose=True,
         )

@@ -1,10 +1,13 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
-from crewai_tools import SerperDevTool
+from crewai_tools import ScrapeWebsiteTool, SerperDevTool
+
 from langchain_openai import ChatOpenAI
 
 from write_a_technical_blog.types import BlogPost
 
+search_tool = SerperDevTool()
+scrape_tool = ScrapeWebsiteTool()
 
 @CrewBase
 class BlogWritingCrew:
@@ -17,10 +20,9 @@ class BlogWritingCrew:
     @agent
     def researcher(self) -> Agent:
         """Researcher agent - gathers information on the topic"""
-        search_tool = SerperDevTool()
         return Agent(
             config=self.agents_config["researcher"],
-            tools=[search_tool],
+            tools=[search_tool, scrape_tool],
             llm=self.llm,
             allow_delegation=True,
             verbose=True,
@@ -31,6 +33,7 @@ class BlogWritingCrew:
         """Content Writer agent - creates the main blog content"""
         return Agent(
             config=self.agents_config["content_writer"],
+            tools=[search_tool, scrape_tool],
             llm=self.llm,
             allow_delegation=True,
             verbose=True,
@@ -41,6 +44,7 @@ class BlogWritingCrew:
         """Code Writer agent - develops clear, well-documented code examples"""
         return Agent(
             config=self.agents_config["code_writer"],
+            tools=[search_tool, scrape_tool],
             llm=self.llm,
             allow_delegation=True,
             verbose=True,
@@ -108,7 +112,7 @@ class BlogWritingCrew:
         return Crew(
             agents=self.agents,
             tasks=self.tasks,
-            manager_llm=ChatOpenAI(model="gpt-4o", temperature=0.7),
+            manager_llm=ChatOpenAI(model="gpt-4o", temperature=0.3),
             process=Process.hierarchical,
             verbose=True,
         )

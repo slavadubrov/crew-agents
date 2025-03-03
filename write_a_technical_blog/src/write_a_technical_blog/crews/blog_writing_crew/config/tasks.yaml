@@ -117,6 +117,8 @@ review_blog_post:
     
     Finally, compile all components into a cohesive, well-formatted markdown document that's ready for publication.
     Include a clear title, introduction, main content with appropriate headings, code examples, diagrams, and conclusion.
+    If content, code or diagram require significant improvement, request changes until you satisfied with quality.
+    Do not forget include provided material: content, code, diagrams!
 
   expected_output: >
     A polished, publication-ready blog post in markdown format that includes well-integrated content, code examples, and diagrams.
