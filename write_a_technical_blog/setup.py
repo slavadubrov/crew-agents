@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 setup(
     name="write_a_technical_blog",
@@ -15,4 +15,4 @@ setup(
             "kickoff=write_a_technical_blog.main:kickoff",
         ],
     },
-) 
+)

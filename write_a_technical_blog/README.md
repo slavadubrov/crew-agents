@@ -47,19 +47,13 @@ You can customize the blog topic and goal in the `BlogState` class in `src/write
 To run the flow:
 
 ```bash
-python test_blog_flow.py
+python -m write_a_technical_blog.main
 ```
 
 This will:
 1. Generate a blog series roadmap
 2. Create individual blog posts based on the roadmap
 3. Save all content as Markdown files in the `output` directory
-
-To visualize the flow without running it:
-
-```bash
-python test_blog_flow.py plot
-```
 
 ## Customization
 
@@ -75,4 +69,4 @@ The system generates:
 
 ## License
 
-MIT 
+MIT
