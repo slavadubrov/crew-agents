@@ -22,6 +22,7 @@ class BlogWritingCrew:
             config=self.agents_config["researcher"],
             tools=[search_tool],
             llm=self.llm,
+            allow_delegation=True,
             verbose=True,
         )
 
@@ -31,6 +32,7 @@ class BlogWritingCrew:
         return Agent(
             config=self.agents_config["content_writer"],
             llm=self.llm,
+            allow_delegation=True,
             verbose=True,
         )
 
@@ -40,6 +42,7 @@ class BlogWritingCrew:
         return Agent(
             config=self.agents_config["code_writer"],
             llm=self.llm,
+            allow_delegation=True,
             verbose=True,
         )
 
@@ -49,6 +52,7 @@ class BlogWritingCrew:
         return Agent(
             config=self.agents_config["diagram_creator"],
             llm=self.llm,
+            allow_delegation=True,
             verbose=True,
         )
 
@@ -58,6 +62,7 @@ class BlogWritingCrew:
         return Agent(
             config=self.agents_config["reviewer"],
             llm=self.llm,
+            allow_delegation=True,
             verbose=True,
         )
 
@@ -103,6 +108,7 @@ class BlogWritingCrew:
         return Crew(
             agents=self.agents,
             tasks=self.tasks,
-            process=Process.sequential,
+            manager_llm=ChatOpenAI(model="gpt-4o", temperature=0.7),
+            process=Process.hierarchical,
             verbose=True,
         )
