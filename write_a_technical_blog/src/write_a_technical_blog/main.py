@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import logging
 import os
+import re
 import uuid
 
 from crewai.flow.flow import Flow, listen, start
@@ -51,22 +52,72 @@ class BlogState(BaseModel):
     blog_roadmap: list[BlogPostOutline] = []
     topic: str = "Python Design Patterns for Machine Learning"
     goal: str = """
-        Create a comprehensive series of technical blog posts about comprehensive 
-        overview with examples of the most common design patterns used in machine 
-        learning. Each post should explain a specific pattern with real-world examples, 
-        code snippets, and diagrams. The content should be suitable for intermediate 
-        Python ML Engineers looking to improve their skills.
+        Create a comprehensive series of technical blog posts about comprehensive
+        overview with examples of the most common design patterns used in machine
+        learning. Each post should explain a specific pattern with real-world 
+        examples, code snippets, and diagrams. The content should be suitable for 
+        intermediate Python ML Engineers looking to improve their skills.
     """
+
+
+def parse_roadmap_file(roadmap_file_path):
+    """Parse a roadmap markdown file to extract topic, goal, and blog post outlines."""
+    with open(roadmap_file_path, "r", encoding="utf-8") as file:
+        content = file.read()
+
+    # Extract topic
+    topic_match = re.search(r"## Topic: (.+?)(?:\n|$)", content)
+    topic = topic_match.group(1).strip() if topic_match else ""
+
+    # Extract goal
+    goal_match = re.search(r"## Goal\n(.*?)\n\n## Planned Posts", content, re.DOTALL)
+    goal = goal_match.group(1).strip() if goal_match else ""
+
+    # Extract planned posts
+    post_outlines = []
+    post_sections = re.finditer(
+        r"### \d+\. (.+?)\n\n(.*?)(?=\n\n### \d+\.|$)", content, re.DOTALL
+    )
+
+    for match in post_sections:
+        title = match.group(1).strip()
+        description = match.group(2).strip()
+        post_outlines.append(BlogPostOutline(title=title, description=description))
+
+    return topic, goal, post_outlines
 
 
 class BlogFlow(Flow[BlogState]):
     """Flow for the blog writing process"""
 
     initial_state = BlogState
+    skip_planning = False
+
+    def __init__(self, skip_planning=False, roadmap_file=None):
+        """Initialize the flow with options to skip planning phase."""
+        super().__init__()
+        self.skip_planning = skip_planning
+        self.roadmap_file = roadmap_file
+
+        # If skipping planning and using roadmap file, parse it
+        if self.skip_planning and self.roadmap_file:
+            topic, goal, post_outlines = parse_roadmap_file(self.roadmap_file)
+            self.state.topic = topic
+            self.state.goal = goal
+            self.state.blog_roadmap = post_outlines
+            logger.info(
+                f"Loaded roadmap from {roadmap_file} with "
+                f"{len(post_outlines)} posts"
+            )
 
     @start()
     def generate_blog_roadmap(self):
         """Generate the roadmap for the blog series"""
+        # Skip planning if using an existing roadmap
+        if self.skip_planning:
+            logger.info("Skipping planning phase, using provided roadmap")
+            return self.state.blog_roadmap
+
         logger.info("Starting the Blog Planning Crew")
         output = (
             BlogPlanningCrew()
@@ -149,13 +200,42 @@ class BlogFlow(Flow[BlogState]):
         return self.state.blog_posts
 
 
-def kickoff():
-    """Run the blog flow"""
+def kickoff(skip_planning=False, roadmap_file=None):
+    """Run the blog flow
+
+    Args:
+        skip_planning: If True, skip the planning phase and use roadmap_file instead
+        roadmap_file: Path to the roadmap markdown file to use when skipping planning
+    """
     logger.info("Starting Blog Generation Flow")
-    blog_flow = BlogFlow()
+
+    if skip_planning and not roadmap_file:
+        logger.error("roadmap_file must be provided when skip_planning is True")
+        return
+
+    if skip_planning:
+        logger.info(f"Using roadmap file: {roadmap_file}")
+
+    blog_flow = BlogFlow(skip_planning=skip_planning, roadmap_file=roadmap_file)
     blog_flow.kickoff()
     logger.info("Blog Generation Flow completed")
 
 
 if __name__ == "__main__":
-    kickoff()
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Generate technical blog posts")
+    parser.add_argument(
+        "--skip-planning",
+        action="store_true",
+        help="Skip the planning phase and use an existing roadmap file",
+    )
+    parser.add_argument(
+        "--roadmap-file",
+        type=str,
+        help="Path to the roadmap markdown file (required if --skip-planning is used)",
+    )
+
+    args = parser.parse_args()
+
+    kickoff(skip_planning=args.skip_planning, roadmap_file=args.roadmap_file)
